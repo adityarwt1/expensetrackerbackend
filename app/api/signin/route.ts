@@ -1,9 +1,66 @@
+import { DBconnect, DBdisconnect } from "@/lib/mongobd";
+import User from "@/models/User";
+import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
+    const { email, passoword } = await request.json();
+
+    //// handling the bad request data
+    if (!email || !passoword) {
+      return NextResponse.json(
+        { error: "Bad request" },
+        {
+          status: 400,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Headers": "Content-Type",
+          },
+        }
+      );
+    }
+
+    /// gettin the user data from the db
+    await DBconnect();
+    const user = await User.findOne({ email }).select(
+      "email password fullname"
+    );
+    await DBdisconnect();
+    if (!user) {
+      return NextResponse.json(
+        { error: "User not found" },
+        {
+          status: 404,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Headers": "Content-Type",
+          },
+        }
+      );
+    }
+
+    /// checking the passoword tru orr not
+    const isPasswordTrue = await bcrypt.compare(passoword, user.password);
+    if (!isPasswordTrue) {
+      return NextResponse.json(
+        { error: "Wrong Password" },
+        {
+          status: 400,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Headers": "Content-Type",
+          },
+        }
+      );
+    }
+
+    // returning the final user login data
     return NextResponse.json(
-      { message: "Hellow from the cors api" },
+      { message: "Hellow from the cors api", user },
       {
         status: 200,
         headers: {
@@ -14,6 +71,7 @@ export async function POST(request: NextRequest) {
       }
     );
   } catch (error) {
+    /// internal server issue condition
     console.log((error as Error).message);
     return NextResponse.json(
       { error: "Internal server issue" },
