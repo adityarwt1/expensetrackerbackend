@@ -29,6 +29,7 @@ const UserSchema: Schema<User> = new Schema(
     timestamps: true,
   }
 );
-
+UserSchema.index({ email: 1 });
+UserSchema.index({ _id: 1 });
 const User = mongoose.models.User || mongoose.model<User>("User", UserSchema);
 export default User;
