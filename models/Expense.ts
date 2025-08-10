@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 interface Expense extends Document {
   userid: mongoose.Types.ObjectId;
   title: string;
-  amount: number;
+  amount: string;
   method?: "us-dollar" | "inr";
 }
 
@@ -19,7 +19,7 @@ const ExpenseSchema: Schema<Expense> = new Schema(
       required: true,
     },
     amount: {
-      type: Number,
+      type: String,
       required: true,
     },
     method: {
