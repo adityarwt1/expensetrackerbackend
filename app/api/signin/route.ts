@@ -5,10 +5,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, passoword } = await request.json();
+    const { email, password } = await request.json();
 
     //// handling the bad request data
-    if (!email || !passoword) {
+    if (!email || !password) {
       return NextResponse.json(
         { error: "Bad request" },
         {
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     /// checking the passoword tru orr not
-    const isPasswordTrue = await bcrypt.compare(passoword, user.password);
+    const isPasswordTrue = await bcrypt.compare(password, user.password);
     if (!isPasswordTrue) {
       return NextResponse.json(
         { error: "Wrong Password" },
