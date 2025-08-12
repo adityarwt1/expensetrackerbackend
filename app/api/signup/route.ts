@@ -3,7 +3,7 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function OPTIONS(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     const { fullname, email, image, password } = await request.json();
 
@@ -16,7 +16,7 @@ export async function OPTIONS(request: NextRequest) {
           status: 400,
           headers: {
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Methods": "GET, POST",
             "Access-Control-Allow-Headers": "Content-Type",
           },
         }
@@ -66,7 +66,7 @@ export async function OPTIONS(request: NextRequest) {
     );
   } catch (error) {
     /// internal server issue condition
-    console.log((error as Error).message);
+    console.log(error );
     return NextResponse.json(
       { error: "Internal server issue" },
       {
