@@ -3,10 +3,11 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function OPTIONS(request: NextRequest) {
   try {
     const { fullname, email, image, password } = await request.json();
 
+    console.log(fullname, email,password)
     /// condition of when not found the data
     if (!fullname || !email || !password) {
       return NextResponse.json(
