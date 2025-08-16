@@ -2,6 +2,11 @@ import { DBconnect } from "@/lib/mongobd";
 import Expense from "@/models/Expense";
 import { NextRequest, NextResponse } from "next/server";
 
+const corsHeader = {
+  "Access-Control-Allow-Origin":"*",
+  "Access-Control-Allow-Methods":"POST, OPTIONS",
+  "Access-Control-Allow-Headers":"Content-Type"
+}
 export async function POST(req: NextRequest) {
   try {
     const _id = req.nextUrl.searchParams.get("id");
@@ -37,11 +42,7 @@ export async function POST(req: NextRequest) {
       { expense },
       {
         status: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
+        headers: corsHeader
       }
     );
   } catch (error) {
@@ -49,11 +50,7 @@ export async function POST(req: NextRequest) {
       { error: (error as Error).message },
       {
         status: 500,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
+        headers: corsHeader
       }
     );
   }
