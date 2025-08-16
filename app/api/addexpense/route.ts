@@ -3,6 +3,11 @@ import Expense from "@/models/Expense";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
+const corseHeader = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
 export async function POST(req: NextRequest) {
   try {
     const { title, amount, currency, userid, type } = await req.json();
@@ -12,11 +17,7 @@ export async function POST(req: NextRequest) {
         { error: "Bad request" },
         {
           status: 400,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST",
-            "Access-Control-Allow-Headers": "Content-Type",
-          },
+          headers: corseHeader
         }
       );
     }
@@ -35,11 +36,7 @@ export async function POST(req: NextRequest) {
       { expense },
       {
         status: 201,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
+        headers: corseHeader
       }
     );
   } catch (error) {
@@ -47,11 +44,7 @@ export async function POST(req: NextRequest) {
       { error: (error as Error).message },
       {
         status: 500,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
+        headers: corseHeader
       }
     );
   }
@@ -63,7 +56,8 @@ export async function OPTIONS() {
     message:"Corse preflight"
   },
   {
-    status: 200
+    status: 200,
+    headers:corseHeader
   })
   
 }
