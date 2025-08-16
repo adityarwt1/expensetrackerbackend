@@ -4,6 +4,7 @@ interface Expense extends Document {
   userid: mongoose.Types.ObjectId;
   title: string;
   amount: string;
+  type?: "credited" | "debited"
   method?: "us-dollar" | "inr";
 }
 
@@ -27,6 +28,11 @@ const ExpenseSchema: Schema<Expense> = new Schema(
       enum: ["us-dollar", "inr"], // only two allowed values
       required: true,
     },
+    type:{
+      type: String,
+      default: "inr",
+      enum: ["credited", "debited"]
+    }
   },
   {
     timestamps: true,
