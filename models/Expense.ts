@@ -5,7 +5,7 @@ interface Expense extends Document {
   title: string;
   amount: string;
   type?: "credited" | "debited"
-  method?: "us-dollar" | "inr";
+  currency?: "us-dollar" | "inr";
 }
 
 const ExpenseSchema: Schema<Expense> = new Schema(
@@ -23,7 +23,7 @@ const ExpenseSchema: Schema<Expense> = new Schema(
       type: String,
       required: true,
     },
-    method: {
+    currency: {
       type: String,
       enum: ["us-dollar", "inr"], // only two allowed values
       required: true,

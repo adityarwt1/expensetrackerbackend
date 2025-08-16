@@ -5,9 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { title, amount, method, userid } = await req.json();
-    /// in case of bad request
-    if (!title || !amount || !method || !userid) {
+    const { title, amount, currency, userid, type } = await req.json();
+
+    if (!title || !amount || !currency || !userid) {
       return NextResponse.json(
         { error: "Bad request" },
         {
@@ -21,12 +21,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    /// time to addd the expense to the
     await DBconnect();
     const expense = new Expense({
       title,
       amount,
-      method,
+      currency,
+      type,
       userid: new mongoose.Types.ObjectId(userid as string),
     });
     await expense.save();
@@ -55,4 +55,15 @@ export async function POST(req: NextRequest) {
       }
     );
   }
+}
+
+export async function OPTIONS() {
+  return NextResponse.json(
+  {
+    message:"Corse preflight"
+  },
+  {
+    status: 200
+  })
+  
 }
