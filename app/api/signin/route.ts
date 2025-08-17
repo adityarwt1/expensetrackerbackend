@@ -2,6 +2,7 @@ import { DBconnect, DBdisconnect } from "@/lib/mongobd";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST OPTIONS",
@@ -11,7 +12,6 @@ export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
 
-    //// handling the bad request data
     if (!email || !password) {
       return NextResponse.json(
         { error: "Bad request" },
