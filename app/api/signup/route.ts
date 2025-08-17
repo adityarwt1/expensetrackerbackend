@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     if (exist) {
       return NextResponse.json(
-        { message: "User already exists" },
+        { error: "User already exists" },
         { status: 409, headers: corsHeaders }
       );
     }
